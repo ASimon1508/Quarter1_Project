@@ -1,8 +1,10 @@
-h1 {
-  text-align: center;
-}
 body {
-  background-color: #d3b88c;
-  color: #cfbfe3;
-  /*Next color is #000010*/
+    background-color: #adaacb;
+}
+
+.backgroundbox {
+    background: #c2b272;
+    text-align: center;
+    width: 45%;
+    
 }
