@@ -145,21 +145,47 @@ input {
 }
 
 .edit {
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   color: white;
   padding: 5px 10px;
   margin-right: 40px;
   cursor: pointer;
   float: right;
   border-radius: 10px;
-  
 }
 
 .save {
-  background-color: #2196F3; /* Blue */
+  background-color: #2196f3; /* Blue */
   color: white;
   padding: 5px 10px;
   margin-left: 10px;
   cursor: pointer;
   border-radius: 10px;
+}
+
+/* Add smooth transitions to the list items */
+
+ul li.dragging {
+  opacity: 0.5;
+  transform: scale(
+    1.05
+  ); /* Slightly enlarge the item to give it a lifted effect */
+}
+
+/* Optional: Add a "bounce" effect when dropped */
+ul li.dropped {
+  animation: bounce 0.3s ease-out;
+}
+
+/* Keyframe animation for the "bounce" effect */
+@keyframes bounce {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
