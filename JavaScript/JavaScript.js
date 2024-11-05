@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", loadItems);
 function loadItems() {
   const items = JSON.parse(localStorage.getItem("todoItems")) || [];
   items.forEach((item) => {
-    addItemToList(item);
+    addItemToList(item.text, item.checked); // Pass both text and checked state
   });
 }
 
@@ -13,7 +13,7 @@ function newElement() {
   if (inputValue === "") {
     alert("You must write something!");
   } else {
-    addItemToList(inputValue);
+    addItemToList(inputValue, false); // New item is not checked initially
     saveItems();
   }
   document.getElementById("myInput").value = "";
@@ -25,16 +25,25 @@ list.addEventListener(
   "click",
   function (ev) {
     if (ev.target.tagName === "LI") {
-      ev.target.classList.toggle("checked");
+      const li = ev.target;
+      li.classList.toggle("checked");
+
+      // Update checked state in localStorage
+      updateCheckedState(li.textContent, li.classList.contains("checked"));
+      saveItems();
     }
   },
   false
 );
 
-function addItemToList(value) {
+function addItemToList(value, isChecked) {
   var li = document.createElement("li");
   var t = document.createTextNode(value);
   li.appendChild(t);
+
+  if (isChecked) {
+    li.classList.add("checked"); // If item is checked, add the class
+  }
 
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
@@ -53,14 +62,27 @@ function addItemToList(value) {
 }
 
 function removeItemFromStorage(itemToRemove) {
+  let items = JSON.parse(localStorage.getItem("todoItems")) || [];
+  items = items.filter((item) => item.text !== itemToRemove); // Remove item by text
+  localStorage.setItem("todoItems", JSON.stringify(items));
+}
+
+function updateCheckedState(itemText, isChecked) {
   const items = JSON.parse(localStorage.getItem("todoItems")) || [];
-  const updatedItems = items.filter((item) => item !== itemToRemove);
-  localStorage.setItem("todoItems", JSON.stringify(updatedItems));
+  const item = items.find((item) => item.text === itemText);
+  if (item) {
+    item.checked = isChecked; // Update the checked state of the item
+    localStorage.setItem("todoItems", JSON.stringify(items)); // Save the updated list
+  }
 }
 
 function saveItems() {
-  const items = Array.from(document.querySelectorAll("#myUL li")).map(
-    (li) => li.firstChild.textContent
-  );
+  const items = Array.from(document.querySelectorAll("#myUL li")).map((li) => {
+    return {
+      text: li.firstChild.textContent,
+      checked: li.classList.contains("checked"), // Save the checked state
+    };
+  });
   localStorage.setItem("todoItems", JSON.stringify(items));
 }
+
