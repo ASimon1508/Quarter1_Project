@@ -59,7 +59,11 @@ function addItemToList(value, isChecked) {
   editButton.appendChild(editText);
   li.appendChild(editButton);
 
-  document.getElementById("myUL").appendChild(li);
+  // Make the list item draggable
+  li.setAttribute("draggable", "true");
+
+  // Append to the list
+  document.getElementById("List").appendChild(li);
 
   // Close button functionality
   span.onclick = function () {
@@ -72,6 +76,60 @@ function addItemToList(value, isChecked) {
   editButton.onclick = function () {
     editItem(li);
   };
+
+  // Add drag events for this item
+  li.addEventListener("dragstart", handleDragStart);
+  li.addEventListener("dragover", handleDragOver);
+  li.addEventListener("drop", handleDrop);
+  li.addEventListener("dragend", handleDragEnd);
+}
+
+function handleDragStart(event) {
+  // Store the dragged element in the drag event's data
+  event.dataTransfer.setData("text", event.target.innerText);
+  event.target.classList.add("dragging"); // Add a "dragging" class for styling
+}
+
+function handleDragOver(event) {
+  event.preventDefault(); // This is necessary to allow dropping
+}
+
+function handleDrop(event) {
+  event.preventDefault(); // Prevent default behavior (open as link)
+
+  const draggedText = event.dataTransfer.getData("text");
+  const droppedItem = event.target;
+
+  // If the dropped target is a list item, we need to reorder
+  if (droppedItem.tagName === "LI" && draggedText !== droppedItem.innerText) {
+    // Find the dragged item in the list
+    const draggedItem = [...document.querySelectorAll("ul li")].find(
+      (li) => li.innerText === draggedText
+    );
+
+    // Insert the dragged item before or after the dropped item
+    const parent = droppedItem.parentNode;
+    if (
+      droppedItem.compareDocumentPosition(draggedItem) &
+      Node.DOCUMENT_POSITION_FOLLOWING
+    ) {
+      parent.insertBefore(draggedItem, droppedItem);
+    } else {
+      parent.insertBefore(draggedItem, droppedItem.nextSibling);
+    }
+
+    draggedItem.classList.add("dropped"); // Add drop animation class
+    saveItems(); // Save the new order to localStorage
+  }
+
+  // Remove the dragging class
+  const allItems = document.querySelectorAll("li");
+  allItems.forEach((item) => item.classList.remove("dragging"));
+}
+
+function handleDragEnd(event) {
+  // Remove the dragging effect when the drag ends
+  event.target.classList.remove("dragging");
 }
 
 function editItem(li) {
@@ -134,7 +192,7 @@ function updateItemText(oldText, newText) {
 }
 
 function saveItems() {
-  const items = Array.from(document.querySelectorAll("#myUL li")).map((li) => {
+  const items = Array.from(document.querySelectorAll("#List li")).map((li) => {
     return {
       text: li.firstChild.textContent,
       checked: li.classList.contains("checked"), // Save the checked state
