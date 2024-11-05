@@ -1,22 +1,18 @@
+Aiden Simon 11/5/24 4-A/B
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset = "UTF-8">
-        <meta name = "description" content = "To-Do List" />
-
-         <!--CSS Link-->
-        <link rel="stylesheet" href="./CSS/styles.css" />
-
-        <title>To - Do List</title>
-    </head>
-
-    <div class = "backgroundbox">
-    <h1>TO - DO LIST</h1>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="CSS/Style.css" />
+  </head>
+  <body>
+    <div id="myDIV" class="header">
+      <h2 style="margin: 5px;">My To Do List</h2>
+      <input type="text" id="myInput" placeholder="Title..." />
+      <span onclick="newElement()" class="addBtn">Add</span>
     </div>
 
-    <ul class = "table">
-      <li> </li>
-    </ul>
-
-      
+    <ul id="myUL"></ul>
+    <script src="JavaScript/JavaScript.js"></script>
+  </body>
 </html>
