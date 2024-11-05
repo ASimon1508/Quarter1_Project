@@ -1,6 +1,10 @@
 body {
   margin: 0;
   min-width: 250px;
+  background-color: #adaacb;
+  font-family: "Archivo Black", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* Include the padding and border in an element's total width and height */
@@ -20,9 +24,15 @@ ul li {
   position: relative;
   padding: 12px 8px 12px 40px;
   list-style-type: none;
-  background: #eee;
+  background: #9e87ca;
   font-size: 18px;
   transition: 0.2s;
+  margin: 15px;
+  border-radius: 10px;
+  border-style: double;
+  border-color: #eee;
+  border-width: 2px;
+  color: #eee;
 
   /* make the list items unselectable */
   -webkit-user-select: none;
@@ -33,12 +43,15 @@ ul li {
 
 /* Set all odd list items to a different color (zebra-stripes) */
 ul li:nth-child(odd) {
-  background: #f9f9f9;
+  background: #9e87ca;
 }
 
 /* Darker background-color on hover */
 ul li:hover {
   background: #ddd;
+  color: #000;
+  border-color: #9e87ca;
+  border-width: 5px;
 }
 
 /* When clicked on, add a background color and strike out text */
@@ -68,6 +81,11 @@ ul li.checked::before {
   right: 0;
   top: 0;
   padding: 12px 16px 12px 16px;
+  color: #aaa;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 .close:hover {
@@ -77,10 +95,15 @@ ul li.checked::before {
 
 /* Style the header */
 .header {
-  background-color: #f44336;
+  background-color: #9e87ca;
   padding: 30px 40px;
   color: white;
   text-align: center;
+  border-radius: 10px;
+  margin: 20px;
+  border-style: double;
+  border-color: #eee;
+  border-width: 6px;
 }
 
 /* Clear floats after the header */
@@ -94,11 +117,12 @@ ul li.checked::before {
 input {
   margin: 0;
   border: none;
-  border-radius: 0;
+  border-radius: 10px;
   width: 75%;
   padding: 10px;
   float: left;
   font-size: 16px;
+  margin-left: -30;
 }
 
 /* Style the "Add" button */
@@ -112,9 +136,30 @@ input {
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s;
-  border-radius: 0;
+  border-radius: 10px;
+  margin-left: 30;
 }
 
 .addBtn:hover {
   background-color: #bbb;
+}
+
+.edit {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 5px 10px;
+  margin-right: 40px;
+  cursor: pointer;
+  float: right;
+  border-radius: 10px;
+  
+}
+
+.save {
+  background-color: #2196F3; /* Blue */
+  color: white;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 10px;
 }
