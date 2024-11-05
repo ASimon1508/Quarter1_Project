@@ -45,11 +45,19 @@ function addItemToList(value, isChecked) {
     li.classList.add("checked"); // If item is checked, add the class
   }
 
+  // Create the close button
   var span = document.createElement("SPAN");
   var txt = document.createTextNode("\u00D7");
   span.className = "close";
   span.appendChild(txt);
   li.appendChild(span);
+
+  // Create the edit button
+  var editButton = document.createElement("BUTTON");
+  var editText = document.createTextNode("Edit");
+  editButton.className = "edit";
+  editButton.appendChild(editText);
+  li.appendChild(editButton);
 
   document.getElementById("myUL").appendChild(li);
 
@@ -58,6 +66,46 @@ function addItemToList(value, isChecked) {
     var div = this.parentElement;
     div.remove(); // Remove the item from the DOM
     removeItemFromStorage(value); // Remove from local storage
+  };
+
+  // Edit button functionality
+  editButton.onclick = function () {
+    editItem(li);
+  };
+}
+
+function editItem(li) {
+  const currentText = li.firstChild.textContent; // Get the current text of the list item
+  const inputField = document.createElement("input"); // Create an input field
+  inputField.value = currentText; // Set the current text as the input value
+
+  // Replace the list item text with the input field
+  li.firstChild.replaceWith(inputField);
+
+  // Change the "Edit" button to a "Save" button
+  const editButton = li.querySelector(".edit");
+  editButton.textContent = "Save";
+  editButton.className = "save"; // Change button class to "save" to identify it
+
+  // Handle the saving of the edited text
+  editButton.onclick = function () {
+    const newText = inputField.value;
+    if (newText.trim() !== "") {
+      li.firstChild.replaceWith(document.createTextNode(newText)); // Replace input with new text
+
+      // Update the text in localStorage
+      updateItemText(currentText, newText);
+
+      // Revert button to "Edit"
+      editButton.textContent = "Edit";
+      editButton.className = "edit";
+      editButton.onclick = function () {
+        editItem(li); // Restore edit functionality if user clicks "Edit" again
+      };
+      saveItems(); // Save the updated list to localStorage
+    } else {
+      alert("Text cannot be empty!");
+    }
   };
 }
 
@@ -76,6 +124,15 @@ function updateCheckedState(itemText, isChecked) {
   }
 }
 
+function updateItemText(oldText, newText) {
+  const items = JSON.parse(localStorage.getItem("todoItems")) || [];
+  const item = items.find((item) => item.text === oldText);
+  if (item) {
+    item.text = newText; // Update the text of the item
+    localStorage.setItem("todoItems", JSON.stringify(items)); // Save the updated list
+  }
+}
+
 function saveItems() {
   const items = Array.from(document.querySelectorAll("#myUL li")).map((li) => {
     return {
@@ -85,4 +142,3 @@ function saveItems() {
   });
   localStorage.setItem("todoItems", JSON.stringify(items));
 }
-
